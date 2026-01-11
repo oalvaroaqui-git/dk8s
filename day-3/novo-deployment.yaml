@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-gerado
+  name: nginx-deployment-gerado
+  namespace: giropops
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: nginx-gerado
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: nginx-gerado
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
+        resources: {}

@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: giropops-emptydir
+  labels:
+    app: giropops
+    app.kubernetes.io/name: nginx-emptydir
+    app.kubernetes.io/part-of: giropops
+spec:
+  containers:
+  - name: webserver
+    image: nginx
+    volumeMounts:
+    - mountPath: /giropops
+      name: primeiro-emptydir
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+      requests:
+        memory: "64Mi"
+        cpu: "0.3"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  volumes:
+  - name: primeiro-emptydir
+    emptyDir:
+      sizeLimit: 256Mi

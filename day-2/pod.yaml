@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: giropops-ubuntu
+  labels:
+    app: giropops
+    app.kubernetes.io/name: ubuntu-sleep
+    app.kubernetes.io/part-of: giropops
+spec:
+  containers:
+  - name: ubuntu
+    image: ubuntu
+    args:
+    - sleep
+    - "1800"
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+      requests:
+        memory: "64Mi"
+        cpu: "0.3"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
