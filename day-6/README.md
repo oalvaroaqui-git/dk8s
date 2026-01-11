@@ -9,6 +9,9 @@ Armazenamento no Kubernetes: volumes, PV, PVC e StorageClass.
 
 ## Arquivos
 - `storageclass.yaml`: StorageClass `giropops` com `kubernetes.io/no-provisioner` e `WaitForFirstConsumer`.
+- `pv.yml`: exemplo de PersistentVolume (PV) estatico para uso em laboratorio.
+- `storageclass-nfs.yaml`: StorageClass `nfs` (sem provisionamento automatico).
+- `pv-nfs.yml`: PV estatico usando NFS.
 
 Em **Kubernetes**, **Volumes** são o mecanismo usado para **fornecer armazenamento para os containers** de um Pod. Eles resolvem um problema fundamental dos containers: **o sistema de arquivos de um container é efêmero** (os dados somem quando o container reinicia).
 
@@ -125,6 +128,57 @@ volumes:
 * Recurso de cluster
 * Representa um storage real (EBS, NFS, Ceph, etc.)
 
+### 📄 PV do repositorio (`pv.yml`)
+
+O arquivo `pv.yml` define um PV simples. Principais campos:
+
+- `capacity.storage`: capacidade do volume (ex: `1Gi`).
+- `accessModes`: modo de acesso (ex: `ReadWriteOnce`).
+- `persistentVolumeReclaimPolicy`: o que fazer com o volume ao liberar o PVC (`Retain` mantem os dados).
+- `storageClassName`: classe de storage usada para vinculo do PVC.
+- `hostPath.path`: caminho no node (apenas para laboratorio, nao indicado em producao).
+
+### 📄 PV com NFS do repositorio (`pv-nfs.yml`)
+
+O arquivo `pv-nfs.yml` e um exemplo de PV usando NFS. Campos principais:
+
+- `nfs.server`: IP do servidor NFS (substitua pelo seu).
+- `nfs.path`: diretorio exportado (ex: `/mnt/nfs`).
+- `storageClassName`: classe `nfs` definida em `storageclass-nfs.yaml`.
+
+---
+
+## 🧰 Preparando um servidor NFS (exemplo)
+
+1) Criar o diretorio exportado:
+```bash
+mkdir /mnt/nfs
+```
+
+2) Instalar os pacotes:
+```bash
+sudo apt-get install nfs-kernel-server nfs-common
+```
+
+3) Editar o arquivo `/etc/exports` e adicionar:
+```
+/mnt/nfs *(rw,sync,no_root_squash,no_subtree_check)
+```
+
+Onde:
+- `/mnt/nfs`: diretorio compartilhado.
+- `*`: permite qualquer host (troque por CIDR/IPs para maior seguranca).
+- `rw`: leitura e escrita.
+- `sync`: grava no disco antes de confirmar.
+- `no_root_squash`: root do cliente acessa como root.
+- `no_subtree_check`: desativa checagem de subarvore.
+
+4) Aplicar as configuracoes e verificar:
+```bash
+sudo exportfs -arv
+showmount -e
+```
+
 ### 📄 PersistentVolumeClaim (PVC)
 
 * Pedido de storage feito pelo Pod
@@ -167,6 +221,18 @@ spec:
 
 ---
 
+## Comandos
+```bash
+kubectl apply -f storageclass.yaml
+kubectl apply -f pv.yml
+kubectl apply -f storageclass-nfs.yaml
+kubectl apply -f pv-nfs.yml
+kubectl get storageclass
+kubectl get pv
+```
+
+---
+
 ## 📌 Boas práticas
 
 * ✅ Use **PVC + StorageClass** em produção
@@ -181,3 +247,5 @@ spec:
 - https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 - https://kubernetes.io/docs/concepts/storage/volumes/
 - https://kubernetes.io/docs/concepts/storage/volumes/#nfs
+- https://kubernetes.io/docs/concepts/storage/volumes/#hostpath
+- https://ubuntu.com/server/docs/network-file-system
