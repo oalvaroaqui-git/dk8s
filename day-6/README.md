@@ -175,7 +175,7 @@ Onde:
 
 4) Aplicar as configuracoes e verificar:
 ```bash
-sudo exportfs -arv
+sudo exportfs -ar
 showmount -e
 ```
 
