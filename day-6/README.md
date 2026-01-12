@@ -9,9 +9,9 @@ Armazenamento no Kubernetes: volumes, PV, PVC e StorageClass.
 
 ## Arquivos
 - `storageclass.yaml`: StorageClass `giropops` com `kubernetes.io/no-provisioner` e `WaitForFirstConsumer`.
-- `pv.yml`: exemplo de PersistentVolume (PV) estatico para uso em laboratorio.
+- `pv.yaml`: exemplo de PersistentVolume (PV) estatico para uso em laboratorio.
 - `storageclass-nfs.yaml`: StorageClass `nfs` (sem provisionamento automatico).
-- `pv-nfs.yml`: PV estatico usando NFS.
+- `pv-nfs.yaml`: PV estatico usando NFS.
 
 Em **Kubernetes**, **Volumes** são o mecanismo usado para **fornecer armazenamento para os containers** de um Pod. Eles resolvem um problema fundamental dos containers: **o sistema de arquivos de um container é efêmero** (os dados somem quando o container reinicia).
 
@@ -128,9 +128,9 @@ volumes:
 * Recurso de cluster
 * Representa um storage real (EBS, NFS, Ceph, etc.)
 
-### 📄 PV do repositorio (`pv.yml`)
+### 📄 PV do repositorio (`pv.yaml`)
 
-O arquivo `pv.yml` define um PV simples. Principais campos:
+O arquivo `pv.yaml` define um PV simples. Principais campos:
 
 - `capacity.storage`: capacidade do volume (ex: `1Gi`).
 - `accessModes`: modo de acesso (ex: `ReadWriteOnce`).
@@ -138,9 +138,9 @@ O arquivo `pv.yml` define um PV simples. Principais campos:
 - `storageClassName`: classe de storage usada para vinculo do PVC.
 - `hostPath.path`: caminho no node (apenas para laboratorio, nao indicado em producao).
 
-### 📄 PV com NFS do repositorio (`pv-nfs.yml`)
+### 📄 PV com NFS do repositorio (`pv-nfs.yaml`)
 
-O arquivo `pv-nfs.yml` e um exemplo de PV usando NFS. Campos principais:
+O arquivo `pv-nfs.yaml` e um exemplo de PV usando NFS. Campos principais:
 
 - `nfs.server`: IP do servidor NFS (substitua pelo seu).
 - `nfs.path`: diretorio exportado (ex: `/mnt/nfs`).
@@ -224,9 +224,9 @@ spec:
 ## Comandos
 ```bash
 kubectl apply -f storageclass.yaml
-kubectl apply -f pv.yml
+kubectl apply -f pv.yaml
 kubectl apply -f storageclass-nfs.yaml
-kubectl apply -f pv-nfs.yml
+kubectl apply -f pv-nfs.yaml
 kubectl get storageclass
 kubectl get pv
 ```
