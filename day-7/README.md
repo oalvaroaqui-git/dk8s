@@ -197,6 +197,52 @@ spec:
 
 Observacao: em **kind**, o `LoadBalancer` nao recebe IP externo sem add-ons (ex: MetalLB).
 
+### 4️⃣ Headless Service
+
+Usado para **DNS estavel** por Pod, comum em StatefulSets.
+
+Exemplo (`day-7/nginx-headless-svc.yaml`):
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-headless
+spec:
+  clusterIP: None
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
+```
+
+### ✅ Testes rapidos
+
+ClusterIP:
+```bash
+kubectl port-forward svc/nginx 8080:80
+curl http://localhost:8080
+```
+
+NodePort:
+```bash
+kubectl get nodes -o wide
+curl http://<node-ip>:32000
+```
+
+LoadBalancer:
+```bash
+kubectl get svc nginx-loadbalancer -w
+kubectl port-forward svc/nginx-loadbalancer 8081:80
+curl http://localhost:8081
+```
+
+Headless:
+```bash
+kubectl get svc nginx-headless
+kubectl get endpoints nginx-headless
+```
+
 ---
 
 ## Comandos
