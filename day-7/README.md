@@ -133,6 +133,72 @@ spec:
 
 ---
 
+## 🌐 Services no Kubernetes (conceitos e exemplos)
+
+Um **Service** fornece um IP e DNS estaveis para acessar Pods, fazendo balanceamento entre replicas via `selector`.
+
+### 1️⃣ ClusterIP (padrao)
+
+Exposicao **interna** no cluster.
+
+Exemplo (`day-7/nginx-clusterip-svc.yaml`):
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+```
+
+### 2️⃣ NodePort
+
+Exposicao via uma **porta fixa** em cada Node.
+
+Exemplo (`day-7/nginx-nodeport-svc.yaml`):
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-nodeport
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 32000
+  type: NodePort
+```
+
+### 3️⃣ LoadBalancer
+
+Exposicao via **load balancer** externo (quando o ambiente suporta).
+
+Exemplo (`day-7/nginx-loadbalancer-svc .yaml`):
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-loadbalancer
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: 80
+  type: LoadBalancer
+```
+
+Observacao: em **kind**, o `LoadBalancer` nao recebe IP externo sem add-ons (ex: MetalLB).
+
+---
+
 ## Comandos
 
 ```bash
