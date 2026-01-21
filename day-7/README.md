@@ -230,6 +230,11 @@ kubectl get nodes -o wide
 curl http://<node-ip>:32000
 ```
 
+No kind (ex: contexto `kind-girus`), geralmente funciona direto:
+```bash
+curl http://localhost:32000
+```
+
 LoadBalancer:
 ```bash
 kubectl get svc nginx-loadbalancer -w
