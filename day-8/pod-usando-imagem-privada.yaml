@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: meu-pod
+spec:
+  containers:
+  - name: meu-container
+    image: alvaroishere/allbooks:1.1
+    env:
+    - name: CHOKIDAR_USEPOLLING
+      value: "true"
+    - name: CHOKIDAR_INTERVAL
+      value: "1000"
+    - name: WATCHPACK_POLLING
+      value: "true"
+  imagePullSecrets:
+  - name: dockerhub-test
