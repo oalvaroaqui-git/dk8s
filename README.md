@@ -15,3 +15,5 @@ Aqui voce encontrara conteudos organizados por dia de treinamento, exemplos prat
 - `day-4`
 - `day-5`
 - `day-6`
+- `day-7`
+- `day-8`

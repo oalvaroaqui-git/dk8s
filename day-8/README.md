@@ -29,8 +29,8 @@ Secrets e ConfigMaps no Kubernetes: gerenciamento de dados sensiveis e configura
 ### Secrets
 ```sh
 # base64 para montar o Secret manualmente
-echo -n "alvaro_moura" | base64
-echo -n "Alv@ro1986" | base64
+echo -n "seu_usuario" | base64
+echo -n "sua_senha" | base64
 
 # aplicar e inspecionar
 kubectl apply -f giropops-secret.yaml
